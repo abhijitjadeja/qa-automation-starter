@@ -1,0 +1,6 @@
+<test>
+<ssn>${ssn}</ssn>
+<firstName>${firstName}</firstName>
+<lastName>${lastName}</lastName>
+<dob>${dob}</dob>
+</test>
