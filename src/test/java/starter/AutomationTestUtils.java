@@ -7,6 +7,13 @@ import java.io.StringWriter;
 import java.util.*;
 import java.util.function.Function;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -70,6 +77,25 @@ public class AutomationTestUtils {
 
         } else {
             fail("object was null");
+        }
+    }
+
+   public static String postXML(String uri,String xmlData){
+       return postData(uri,xmlData,"application/xml","application/xml");
+   }
+
+    public static String postData(String uri, String data, String acceptHeader, String contentTypeHeader) {
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpPost httpPost = new HttpPost(uri);
+            StringEntity entity = new StringEntity(data);
+            httpPost.setEntity(entity);
+            httpPost.setHeader("Accept", acceptHeader);
+            httpPost.setHeader("Content-type", contentTypeHeader);
+            try (CloseableHttpResponse response = client.execute(httpPost)) {
+                return EntityUtils.toString(response.getEntity());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

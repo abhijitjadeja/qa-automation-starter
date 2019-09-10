@@ -73,4 +73,10 @@ class StarterTests {
 		System.out.println(d);
 		assertTrue(d.identical());
 	}
+
+	@Test
+	void postXML(){
+		String s =AutomationTestUtils.postData("http://httpbin.org/post","<test>data</test>","application/json","application/xml");
+		assertTrue(s.contains("<test>data</test>"));
+	}
 }
